@@ -1,5 +1,4 @@
 provider "aws" {
-<<<<<<< HEAD
   region = var.region
 }
 
@@ -99,21 +98,4 @@ resource "aws_instance" "web" {
   tags = {
     Name = "WebServerInstance"
   }
-=======
-
-    region = var.aws_region
-}
-
-resource "aws_instance" "web" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-
-  tags = {
-    Name = var.instance_name
-  }
-
-  # Optionally, you can add security group and key pair configurations here.
-vpc_security_group_ids = [aws_security_group.web_sg.id]
-  key_name               = var.key_name
->>>>>>> 91e7b1b85feb11e906dccfb44d99cab8e736d575
 }
