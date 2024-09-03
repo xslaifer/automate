@@ -1,0 +1,15 @@
+resstuructra  /my-infra-automation
+├── .github
+│   └── workflows
+│       └── deploy.yml
+├── terraform
+│   ├── main.tf
+│   ├── variables.tf
+│   └── outputs.tf
+├── ansible
+│   └── playbook.yml
+├── docker
+│   ├── Dockerfile
+│   └── microservice
+└── scripts
+    └── deploy.sh
