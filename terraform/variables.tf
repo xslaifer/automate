@@ -70,3 +70,5 @@ variable "key_name" {
    default     = "my-key-pairautomate"
  }
 >>>>>>> 91e7b1b85feb11e906dccfb44d99cab8e736d575
+
+#hola
