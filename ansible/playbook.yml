@@ -1,0 +1,21 @@
+- name: Configure Nginx on EC2 
+  hosts: WebServerInstance
+  become: yes
+  tasks:
+    - name: Update and upgrade apt packages
+      apt: 
+        update_cache: yes 
+        upgrade: yes
+
+    - name: Install Nginx
+      apt: 
+        name: nginx 
+        state: present
+
+   # - name: Deploy microservice
+   #   docker_container:
+    #    name: microservice
+    #    image: myrepo/microservice:latest
+     #   state: started
+      #  ports:
+       #   - "80:80"
