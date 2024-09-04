@@ -10,6 +10,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
+##
 
 
 # Create VPC
