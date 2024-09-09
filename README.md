@@ -8,7 +8,7 @@ Terraform how to install : https://developer.hashicorp.com/terraform/install?pro
 
 Ansible how to install : https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html .
 
-For example I use Windows, so I follow this steps to install "Cygwin" https://phoenixnap.com/kb/install-ansible-on-windows .
+For example I use Windows, so I follow this steps to install "Cygwin" for ansible https://phoenixnap.com/kb/install-ansible-on-windows .
 
 
 Account GITHUB
