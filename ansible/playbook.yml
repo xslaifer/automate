@@ -1,5 +1,5 @@
 - name: Configure Nginx on EC2 
-  hosts: WebServerInstance
+  hosts: web
   become: yes
   tasks:
     - name: Update and upgrade apt packages
@@ -11,6 +11,35 @@
       apt: 
         name: nginx 
         state: present
+
+    - name: Ensure Nginx is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create a basic HTML page
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Welcome to automate deploy</title>
+          </head>
+          <body>
+              <h1>Success! The Nginx server is installed and running, deployed from terraform and ansible</h1>
+          </body>
+          </html>
+
+    - name: Ensure Nginx is reloaded
+      service:
+        name: nginx
+        state: reloaded
+
+    - name: Display the server's IP address
+      debug:
+        msg: "Nginx is installed and running. Access your page at http://{{ ansible_default_ipv4.address }}/"
 
    # - name: Deploy microservice
    #   docker_container:
