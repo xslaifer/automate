@@ -1,9 +1,3 @@
-﻿# automate
-desde la rama adicional
+﻿# automate Deploy on AWS
 
-desde el master
-otra desde master
-
-desde adicional
-
-desde adicional
+Lab to understand how to deploy infraestucture on AWS using Terraform and Ansible
