@@ -18,17 +18,30 @@ This repository will be constantly on change and add new functionality, until no
 This a tree how to have to be there the files
 
 /my-infra-automation
+
 ├── .github
+
 │   └── workflows
+
 │       └── deploy.yml
+
 ├── terraform
+
 │   ├── main.tf
+
 │   ├── variables.tf
+
 │   └── outputs.tf
+
 ├── ansible
+
 │   └── playbook.yml
+
 ├── docker
+
 │   ├── Dockerfile
+
 │   └── microservice
+
 └── scripts
-    └── deploy.sh
+    
