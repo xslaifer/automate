@@ -48,3 +48,31 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform  # Point to the terraform directory
+
+  ansible:
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ansible
+        uses: ansible/ansible-runner-action@v1
+        with:
+          version: 2.14.0  # Replace with your Ansible version
+
+      - name: Get Terraform Output
+        id: terraform
+        run: echo "INSTANCE_IP=$(terraform output -raw public_ip)" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i "$INSTANCE_IP," ansible/install_nginx.yml
+        env:
+          ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
+          ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
