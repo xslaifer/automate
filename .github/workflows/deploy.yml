@@ -47,7 +47,9 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform  # Point to the terraform directory
-
+        
+      - name: Sincronizar estado de Terraform
+        run: terraform refresh
       - name: Obtener la IP pública de la instancia EC2
         run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
 
