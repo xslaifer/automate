@@ -16,7 +16,7 @@ terraform {
   backend "s3" {
     bucket         = "slaiferterraform"      # Replace with your S3 bucket name
     key            = "stateterraform/terraform.tfstate"   # Path where the state file will be stored in the bucket
-    region         = "us-west-2"                   # The region where your bucket is located
+    region         = var.region                # The region where your bucket is located
     dynamodb_table = "slaifer-terraform-table"        # Replace with your DynamoDB table name
     encrypt        = true                          # Ensure the state file is encrypted at rest
   }
@@ -102,7 +102,7 @@ resource "aws_instance" "web" {
   instance_type = var.instance_type
   subnet_id     = aws_subnet.main.id
   key_name      = var.key_name
-
+  availability_zone = var.zone
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
