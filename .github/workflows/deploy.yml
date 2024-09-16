@@ -75,4 +75,4 @@ jobs:
           ansible-playbook -i "$INSTANCE_IP," ansible/install_nginx.yml
         env:
           ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
-          ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
