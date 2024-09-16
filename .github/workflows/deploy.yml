@@ -74,12 +74,6 @@ jobs:
         run: terraform init
         working-directory: ./terraform  # Point to the terraform directory
 
-      - name: Set up Ansible
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install ansible
-
       - name: Get Terraform Output
         id: terraform
         run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip | tr -d '\n')" >> $GITHUB_ENV
@@ -87,6 +81,12 @@ jobs:
 
       - name: Use the INSTANCE_IP variable
         run: echo "Instance IP is $INSTANCE_IP"
+
+      - name: Set up Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install ansible
 
       - name: Install dependencies
         run: |
