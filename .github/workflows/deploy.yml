@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   terraform:
     name: Deploy with Terraform
@@ -83,7 +82,8 @@ jobs:
 
       - name: Get Terraform Output
         id: terraform
-        run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip)"
+        #run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip)"
+        run: $INSTANCE_IP = echo "$(terraform output -raw instance_public_ip)"
 
       - name: Use the INSTANCE_IP variable
         run: echo "Instance IP is $INSTANCE_IP"
