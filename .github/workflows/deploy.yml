@@ -85,6 +85,9 @@ jobs:
         id: terraform
         run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip)"
 
+      - name: Use the INSTANCE_IP variable
+        run: echo "Instance IP is $INSTANCE_IP"
+
       - name: Install dependencies
         run: |
           sudo apt-get update
