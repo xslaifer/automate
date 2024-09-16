@@ -4,11 +4,18 @@ variable "region" {
   default     = "us-west-2"
 }
 
+variable "zone" {
+  description = "The AWS zone to create resources in"
+  type        = string
+  default     = "us-west-2a"
+}
+
 variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC"
   type        = string
   default     = "14.0.0.0/16"
 }
+
 
 variable "subnet_cidr_block" {
   description = "The CIDR block for the subnet"
