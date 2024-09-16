@@ -2,11 +2,11 @@
 import json
 
 def main():
-    with open('../terraform_outputs.json') as f:
+    with open('terraform_outputs.json') as f:
         outputs = json.load(f)
 
     inventory = {
-        "webservers": {
+        "all": {
             "hosts": [outputs["web_instance_ip"]]
         }
     }
