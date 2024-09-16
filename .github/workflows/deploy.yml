@@ -72,7 +72,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i "$INSTANCE_IP," ansible/install_nginx.yml
+          ansible-playbook -i "$INSTANCE_IP," ansible/playbook.yml
         env:
           ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
           ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
