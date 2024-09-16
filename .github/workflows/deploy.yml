@@ -52,6 +52,7 @@ jobs:
         run: terraform refresh
       - name: Obtener la IP pública de la instancia EC2
         run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
+        working-directory: ./terraform  # Point to the terraform directory
       - name: Mostrar la IP
         run: cat instance_ip.txt
 
