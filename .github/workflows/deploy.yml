@@ -52,7 +52,7 @@ jobs:
         run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
 
       - name: Guardar la IP como artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ec2-instance-ip
           path: instance_ip.txt
@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Descargar artifact de la IP
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ec2-instance-ip
 
