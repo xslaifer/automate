@@ -12,6 +12,15 @@ resource "aws_internet_gateway" "igw" {
 
 ##
 
+terraform {
+  backend "s3" {
+    bucket         = "slaiferterraform"      # Replace with your S3 bucket name
+    key            = "stateterraform/terraform.tfstate"   # Path where the state file will be stored in the bucket
+    region         = "us-west-2"                   # The region where your bucket is located
+    dynamodb_table = "slaifer-terraform-table"        # Replace with your DynamoDB table name
+    encrypt        = true                          # Ensure the state file is encrypted at rest
+  }
+}
 
 # Create VPC
 resource "aws_vpc" "main" {
