@@ -73,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ec2-instance-ip
+          path: instance_ip.txt
 
       - name: Ver la IP obtenida
         run: cat instance_ip.txt
