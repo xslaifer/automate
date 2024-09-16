@@ -82,7 +82,7 @@ jobs:
 
       - name: Get Terraform Output
         id: terraform
-        run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip)" >> $GITHUB_ENV
+        run: echo "INSTANCE_IP=$(terraform output -raw instance_public_ip | tr -d '\n')" >> $GITHUB_ENV
         #run: INSTANCE_IP=echo"$(terraform output -raw instance_public_ip)"
 
       - name: Use the INSTANCE_IP variable
