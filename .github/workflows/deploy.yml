@@ -106,7 +106,9 @@ jobs:
           echo "${{ secrets.SSHKEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $(cat terraform/instance_ip.txt) >> ~/.ssh/known_hosts
-          
+      # Verificar que la clave SSH está configurada correctamente
+      - name: List SSH directory
+        run: ls -la ~/.ssh   
           
       # Ejecutar el playbook de Ansible
       - name: Run Ansible Playbook
