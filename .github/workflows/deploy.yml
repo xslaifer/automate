@@ -96,7 +96,7 @@ jobs:
         run: |
           mkdir -p inventory
           echo "[web]" > inventory/hosts
-          cat terraform/instance_ip.txt | xargs -I {} echo "{} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/root/.ssh/id_rsa" >> inventory/hosts
+          cat terraform/instance_ip.txt | xargs -I {} echo "{} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa" >> inventory/hosts
           
 
       # Configurar clave SSH desde secreto
