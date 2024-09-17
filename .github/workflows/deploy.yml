@@ -77,7 +77,7 @@ jobs:
           path: ./terraform/instance_ip.txt
 
       - name: Ver la IP obtenida
-        run: cat instance_ip.txt
+        run: cat ./terraform/instance_ip.txt
 
       - name: Set up Ansible
         run: |
