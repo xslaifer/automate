@@ -77,8 +77,8 @@ jobs:
           path: ./terraform/instance_ip.txt
 
       - name: Ver la IP obtenida
-        run: cat ./terraform/instance_ip.txt
-
+        run: cat instance_ip.txt
+        working-directory: ./terraform
       - name: Set up Ansible
         run: |
           sudo apt-get update
@@ -92,7 +92,8 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i $(cat ./terraform/instance_ip.txt ), ansible/playbook.yml
+          ansible-playbook -i $(cat instance_ip.txt ), ansible/playbook.yml
+        working-directory: ./terraform
         env:
           ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
           ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
