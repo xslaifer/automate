@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ec2-instance-ip
-          path: ./terraform/instance_ip.txt
+          path: ./terraform
         
 
   ansible:
@@ -74,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ec2-instance-ip
-          path: ./terraform/instance_ip.txt
+          path: ./terraform
 
       - name: Ver la IP obtenida
         run: cat instance_ip.txt
