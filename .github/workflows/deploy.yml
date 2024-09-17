@@ -54,7 +54,7 @@ jobs:
         
       - name: Obtener la IP pública de la instancia EC2
        # run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
-        run: terraform output -raw instance_public_ip  | sed -n 's/.*\([0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\).*/\1/p' > instance_ip.txt
+        run: terraform output -raw instance_public_ip  | grep -oP '\d{1,3}(\.\d{1,3}){3}' | head -n 1 > instance_ip.txt
         working-directory: ./terraform  # Point to the terraform directory
 
       - name: Guardar la IP como artifact
