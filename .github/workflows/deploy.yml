@@ -55,15 +55,13 @@ jobs:
       - name: Obtener la IP pública de la instancia EC2
         run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
         working-directory: ./terraform  # Point to the terraform directory
-        
-      - name: buscar
-        run: find / -name instance_ip.txt
 
       - name: Guardar la IP como artifact
         uses: actions/upload-artifact@v3
         with:
           name: ec2-instance-ip
-          path: instance_ip.txt
+          path: ./terraform/instance_ip.txt
+        
 
   ansible:
     needs: terraform
@@ -76,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ec2-instance-ip
-          path: instance_ip.txt
+          path: ./terraform/instance_ip.txt
 
       - name: Ver la IP obtenida
         run: cat instance_ip.txt
@@ -94,7 +92,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i $(cat instance_ip.txt), ansible/playbook.yml
+          ansible-playbook -i $(cat ./terraform/instance_ip.txt ), ansible/playbook.yml
         env:
           ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
           ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
