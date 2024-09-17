@@ -91,10 +91,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass
 
+      # Crear el archivo de inventario
+      - name: Create Ansible Inventory
+        run: |
+          mkdir -p inventory
+          echo "[web]" > inventory/hosts
+          cat terraform/instance_ip.txt | xargs -I {} echo "{} ansible_ssh_private_key_file=/root/.ssh/id_rsa" >> inventory/hosts
+          working-directory: ./
+
+      # Configurar clave SSH desde secreto
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSHKEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $(cat terraform/instance_ip.txt) >> ~/.ssh/known_hosts
+          working-directory: ./
+          
+      # Ejecutar el playbook de Ansible
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i $(cat terraform/instance_ip.txt ), ansible/playbook.yml
-        working-directory: ./
-        env:
-          ANSIBLE_SSH_USER: ubuntu  # Adjust according to your SSH user
-          ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
+          ansible-playbook -i inventory/hosts ansible/playbook.yml
+
+
