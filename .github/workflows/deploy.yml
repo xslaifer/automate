@@ -53,11 +53,11 @@ jobs:
         working-directory: ./terraform  # Point to the terraform directory
         
       - name: Obtener la IP pública de la instancia EC2
-        run: echo $(terraform output -raw instance_public_ip) > instance_ip.txt
+        run: echo $(terraform output -raw instance_public_ip) > terraform/instance_ip.txt
         working-directory: ./terraform  # Point to the terraform directory
         
       - name: Listar archivos en el directorio actual
-        run: ls -l
+        run: ls -l terraform
 
       - name: Guardar la IP como artifact
         uses: actions/upload-artifact@v3
