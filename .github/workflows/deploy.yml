@@ -71,6 +71,7 @@ jobs:
 # Name the Job ansible and Install Ubuntu for runner server
   ansible:
   # Needs job terraform before start
+    name: Deploy with Ansible using Ubuntu
     needs: terraform
     runs-on: ubuntu-latest
     steps:
