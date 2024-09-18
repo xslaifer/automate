@@ -1,4 +1,4 @@
-﻿# Automate Deploy on AWS
+﻿## Automate Deploy on AWS ##
 
 Lab to understand how to deploy infraestucture on AWS using Terraform, Ansible, and CI / CD with Github Actions.
 
