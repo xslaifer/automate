@@ -32,19 +32,19 @@ variable "instance_type" {
 variable "ami_id" {
   description = "The ID of the AMI to use for the EC2 instance"
   type        = string
-  default     = "ami-01f519a731dd64ba7"
+  default     = "ami-01f519a731dd64ba7" # AMI for Ubuntu
 }
 
+#This is because is to associated SSH key for EC2 and allow it remotly access
 variable "key_name" {
   description = "The name of the SSH key pair"
   type        = string
-  default     = "automate"
+  default     = "automate" 
 }
 
 variable "map_public_ip_on_launch" {
-  description = "Whether to auto-assign public IPs to instances launched in this subnet"
+  description = "Allow  to auto-assign public IPs to instances launched in this subnet"
   type        = bool
   default     = true
 }
 
-###
