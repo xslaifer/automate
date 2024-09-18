@@ -1,6 +1,6 @@
 - name: Configure Nginx on EC2 
-  hosts: web
-  become: yes
+  hosts: web # Name used by inventory file to locate the server for use
+  become: yes # Escalate privileges to root
   tasks:
     - name: Update and upgrade apt packages
       apt: 
@@ -41,10 +41,4 @@
       debug:
         msg: "Nginx is installed and running. Access your page at http://{{ ansible_default_ipv4.address }}/"
 
-   # - name: Deploy microservice
-   #   docker_container:
-    #    name: microservice
-    #    image: myrepo/microservice:latest
-     #   state: started
-      #  ports:
-       #   - "80:80"
+
