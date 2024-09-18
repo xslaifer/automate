@@ -67,6 +67,10 @@ jobs:
         with:
           name: ec2-instance-ip
           path: ./terraform # Point to the terraform directory
+
+      # Wait for EC2 instances to fully deploy
+      - name: Wait for 2 minutes for EC2 instances to fully deploy
+        run: sleep 120  # Wait for 2 minutes (120 seconds)
         
 # Name the Job ansible and Install Ubuntu for runner server
   ansible:
