@@ -1,7 +1,10 @@
+
+# Select the Region
 provider "aws" {
   region = var.region
 }
 
+# Create InternetGateway to reach out internet
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -10,8 +13,8 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-##
-
+#This snippet configures Terraform to use an Amazon S3 bucket as the backend for storing the Terraform state file
+#Previously you need to have created S3 and DYNAMODB
 terraform {
   backend "s3" {
     bucket         = "slaiferterraform"      # Replace with your S3 bucket name
@@ -64,7 +67,8 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.main.id
 }
 
-# Create Security Group
+# Create Security Group to allow access to port 22 , 80 from anywhere for lab testing only
+
 resource "aws_security_group" "web_sg" {
   name        = "web_sg"
   description = "Allow SSH and HTTP traffic"
@@ -101,7 +105,7 @@ resource "aws_instance" "web" {
   ami           = var.ami_id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.main.id
-  key_name      = var.key_name
+  key_name      = var.key_name # Associated the key name
   availability_zone = var.zone
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
