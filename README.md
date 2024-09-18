@@ -25,6 +25,7 @@ This a tree how to have to be there the files
 │       └── deploy.yml
 
 │       └── destroy.yml
+
 ├── ansible
 
 │   └── playbook.yml
