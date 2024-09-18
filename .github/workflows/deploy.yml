@@ -1,4 +1,4 @@
-name: Terraform Deploy
+name: Terraform and Ansible Deploy
 # Triggers on a push event to the master branch
 on:
   push:
@@ -68,7 +68,7 @@ jobs:
           name: ec2-instance-ip
           path: ./terraform # Point to the terraform directory
         
-
+# Name the Job ansible and Install Ubuntu for runner server
   ansible:
   # Needs job terraform before start
     needs: terraform
