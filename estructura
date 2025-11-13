@@ -1,4 +1,4 @@
-resstuructra  /my-infra-automation
+resstuructra  /my-infra-automation-aws
 ├── .github
 │   └── workflows
 │       └── deploy.yml
