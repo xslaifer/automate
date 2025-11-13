@@ -1,0 +1,132 @@
+name: Terraform and Ansible Deploy
+# Triggers on a push event to the master branch
+on:
+  push:
+    branches:
+      - master
+jobs:
+# Name the Job terraform and Install Ubuntu for runner server
+  terraform:
+    name: Deploy with Terraform using Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout and clone the repository using actions actions/checkout@v3
+      - name: Checkout code and clone repository
+        uses: actions/checkout@v3
+
+      # Configure AWS credentials using secrets
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      # Install and set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6
+
+      # Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform  # Point to the terraform directory
+
+      # Validate the Terraform configuration
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform  # Point to the terraform directory
+
+      # Plan the Terraform deployment
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./terraform  # Point to the terraform directory
+
+      # Apply the Terraform configuration (auto-approve to avoid prompt)
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform  # Point to the terraform directory
+
+      # Sync Terraform State for obtain outputs  
+      - name: Sync Terraform State
+        run: terraform refresh
+        working-directory: ./terraform  # Point to the terraform directory
+      
+      # Get the public IP, to connect to th server  
+      - name: Get the public IP of the EC2 instance
+      
+      # Only get the IP using the grep options
+        run: terraform output -raw instance_public_ip  | grep -oP '\d{1,3}(\.\d{1,3}){3}' | head -n 1 > instance_ip.txt
+        working-directory: ./terraform  # Point to the terraform directory
+        
+      # Save th IP as artifact to use later on the others steps
+      - name: Save the IP as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ec2-instance-ip
+          path: ./terraform # Point to the terraform directory
+
+      # Wait for EC2 instances to fully deploy
+      - name: Wait for 4 minutes for EC2 instances to fully deploy
+        run: sleep 240  # Wait for 4 minutes (240 seconds)
+        
+# Name the Job ansible and Install Ubuntu for runner server
+  ansible:
+  # Needs job terraform before start
+    name: Deploy with Ansible using Ubuntu
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+  # Download the IP artifact named ec2-instance-ip saved before      
+      - name: Download IP artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ec2-instance-ip
+          path: ./terraform
+          
+# Just to confirm that artifact works
+      - name: Show the IP
+        run: cat instance_ip.txt
+        working-directory: ./terraform
+        
+      - name: Install and set up Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install ansible
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+      # Create the inventori file to use for ansible for connect to server
+      - name: Create Ansible Inventory
+        run: |
+          mkdir -p inventory
+          echo "[web]" > inventory/hosts
+          cat terraform/instance_ip.txt | xargs -I {} echo "{} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa" >> inventory/hosts
+          
+
+      # Configure SSH key from secret secrets.SSHKEY
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSHKEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $(cat terraform/instance_ip.txt) >> ~/.ssh/known_hosts
+          
+      # List to verify that the key is found
+      - name: List SSH directory
+        run: ls -la ~/.ssh   
+          
+      # Run the Ansible playbook
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i inventory/hosts ansible/playbook.yml
+
